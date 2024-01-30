@@ -27,7 +27,9 @@ int main(int argc, char const **argv, char **envp)
 		arg_tab[0] = (char *)argv[1];
 		arg_tab[1] = (char *)argv[2];
 		arg_tab[2] = NULL;
+		close(fd);
 		execve(strcat(src, arg_tab[0]), arg_tab, envp);
+		perror("execve");
 	}
 	sleep(2);
 	if (!strcmp("touch", argv[1]) && argv[2] && unlink(argv[2]) == 0)

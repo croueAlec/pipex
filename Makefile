@@ -6,7 +6,7 @@
 #    By: acroue <acroue@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/11 11:51:52 by acroue            #+#    #+#              #
-#    Updated: 2024/01/29 17:50:56 by acroue           ###   ########.fr        #
+#    Updated: 2024/01/30 17:53:07 by acroue           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,3 +127,6 @@ valerie: cre
 
 example:
 	@cc example.c -p example
+
+stdout:
+	@cc -g stdout.c libs/libft/libft.a
