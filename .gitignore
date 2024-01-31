@@ -1,3 +1,6 @@
+# Own ignores
+pipex
+
 # Prerequisites
 *.d
 

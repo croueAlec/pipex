@@ -6,7 +6,7 @@
 #    By: acroue <acroue@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/11 11:51:52 by acroue            #+#    #+#              #
-#    Updated: 2024/01/30 17:53:07 by acroue           ###   ########.fr        #
+#    Updated: 2024/01/31 11:31:26 by acroue           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,19 +92,16 @@ fclean: clean
 re: fclean all
 
 $(LIBFT):
-	@echo "$(YELLOW)$(WD) ./$(LIBFT_DIR)$(DEFAULT)"
+	@echo "$(CYAN)~ Compiling$(DEFAULT) $(PURPLE)$(LIBFT_DIR)$(DEFAULT)"
 	@make -C $(LIBFT_DIR) $(LIB_FLAGS)
-	@echo "$(YELLOW)$(WD) ./$(DEFAULT)"
 
 cleanlib:
-	@echo "$(YELLOW)$(WD) ./$(LIBFT_DIR)$(DEFAULT)"
+	@echo "$(RED)! Removing$(DEFAULT) $(PURPLE)$(LIBFT_DIR)$(DEFAULT)"
 	@make clean -C $(LIBFT_DIR) $(LIB_FLAGS)
-	@echo "$(YELLOW)$(WD) ./$(DEFAULT)"
 
 fcleanlib:
-	@echo "$(YELLOW)$(WD) ./$(LIBFT_DIR)$(DEFAULT)"
+	@echo "$(RED)! Removing$(DEFAULT) $(PURPLE)$(LIBFT_DIR)$(DEFAULT)"
 	@make fclean -C $(LIBFT_DIR) $(LIB_FLAGS)
-	@echo "$(YELLOW)$(WD) ./$(DEFAULT)"
 
 relib: fcleanlib $(LIBFT)
 
