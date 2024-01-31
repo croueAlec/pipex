@@ -37,12 +37,12 @@ char	*find_cmd(char **envp, char **argv)
 	envp = ft_split(find_path(envp), ':');
 	while (envp && envp[i])
 	{
-		if (check_path_env(envp[i], argv[1]) && tmp == NULL)
+		if (check_path_env(envp[i], argv[0]) && tmp == NULL)
 			tmp = ft_strdup(envp[i]);
 		free(envp[i]);
 		i++;
 	}
-	return (free(envp), tmp);
+	return (free(envp), ft_sep_join(tmp, argv[0], "/"));
 }
 
 int	execute_cmd(char *path, char **cmd, char **envp)
@@ -52,45 +52,58 @@ int	execute_cmd(char *path, char **cmd, char **envp)
 	pid = fork();
 	printf("%d\n", pid);
 	if (pid == 0)
-		execve(ft_sep_join(path, cmd[0], "/"), cmd, envp);
+		execve(path, cmd, envp);
 	return (0);
 }
 
 int	is_directory(char *str)
 {
-	if (str[0] == '/' && ft_isascii(str[1]))
+	if (!ft_memcmp("/", str, 1))
 		return (1);
-	if (str[0] == '.' && str[1] == '/' && ft_isascii(str[2]))
+	if (!ft_memcmp("./", str, 2))
 		return (1);
-	if (!ft_memcmp("../", str, 3) && ft_isascii(str[3]))
+	if (!ft_memcmp("../", str, 3))
 		return (1);
 	return (0);
 }
 
-void	check_input(char **argv, char **envp)
+char	*check_input(char **argv, char **envp)
 {
-	if (is_directory(argv[1]))
-		printf("ca / ca ./ ou ca ../\n");
-	else if (ft_strchr(argv[1], '/'))
-		printf("contient un /\n");
+	if (is_directory(argv[0]))
+		return (ft_strdup(argv[0]));
+	else if (ft_strchr(argv[0], '/'))
+		return (ft_strjoin("./", argv[0]));
 	else
-		printf("juste une commande\n");
+		return (find_cmd(envp, argv));
+}
+
+void	tab_print(char **tab)
+{
+	for (size_t i = 0; tab[i]; i++)
+	{
+		printf("[%s] ", tab[i]);
+	}
+	printf("\n");
 }
 
 int main(int argc, char *argv[], char **envp)
 {
 	char	*path;
+	char	**tmp_arg;
 
 	if (!envp[0])
 		return (printf("No env\n"));
 	if (argc == 1)
 		return (printf("No arg\n"));
-	check_input(argv, envp);
+	tmp_arg = ft_split(argv[2], 32);
+	path = check_input(tmp_arg, envp);
+	if (!tmp_arg || !path)
+		return (ft_free(tmp_arg, ft_count_words(argv[2], 32)), 0);
 	// if (access(argv[1], X_OK) == 0)
 	// 	return (0);
-	path = find_cmd(envp, argv);
 	printf("%s\n", path);
-	execute_cmd(path, &argv[1], envp);
+	tab_print(tmp_arg);
+	execute_cmd(path, tmp_arg, envp);
 	wait(NULL);
 	return (free(path), 0);
 }
