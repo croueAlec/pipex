@@ -6,7 +6,7 @@
 #    By: acroue <acroue@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/11 11:51:52 by acroue            #+#    #+#              #
-#    Updated: 2024/01/31 11:31:26 by acroue           ###   ########.fr        #
+#    Updated: 2024/02/02 15:07:34 by acroue           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ endef
 INCLUDES := $(strip $(INCLUDES))
 
 define SRC :=
-	salut.c
+	pipex_main.c
 endef
 SRC := $(strip $(SRC))
 
