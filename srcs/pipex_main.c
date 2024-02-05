@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:07:18 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/05 12:30:11 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/05 15:11:09 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,22 +104,34 @@ void	tab_print(char **tab)
 	printf("\n");
 }
 
+int	first_fork(char **argv, char **envp, int pipefd[2])
+{
+	char	**tmp_arg;
+	char	*path;
+
+	tmp_arg = ft_split(argv[0], 32);
+	path = check_input(tmp_arg, envp);
+	if (!tmp_arg || !path)
+		return (ft_free(tmp_arg, ft_count_words(argv[0], 32)), 0);
+	if (close(pipefd[0]))
+		return (errno);
+	dup2(pipefd[1], 1);
+	close(pipefd[1]);
+	execve(path, tmp_arg, envp);
+	if (close(pipefd[1]))
+		return (errno);
+	return (0);
+}
+
 int	normal_fork(char **argv, char **envp, int pipefd[2])
 {
 	char	**tmp_arg;
 	char	*path;
-	int		fd;
 
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-		return ((void)close(pipefd[0]), (void)close(pipefd[1]), -1);
-	if (dup2(fd, STDIN_FILENO) == -1)
-		return ((void)close(pipefd[0]), (void)close(pipefd[1]), -1);
-	close(fd);
-	tmp_arg = ft_split(argv[2], 32);
+	tmp_arg = ft_split(argv[0], 32);
 	path = check_input(tmp_arg, envp);
 	if (!tmp_arg || !path)
-		return (ft_free(tmp_arg, ft_count_words(argv[2], 32)), 0);
+		return (ft_free(tmp_arg, ft_count_words(argv[0], 32)), 0);
 	if (close(pipefd[0]))
 		return (errno);
 	dup2(pipefd[1], 1);
@@ -136,15 +148,15 @@ int	last_fork(char **argv, char **envp, int pipefd[2])
 	char	*path;
 	int		fd;
 
-	tmp_arg = ft_split(argv[3], 32);
+	tmp_arg = ft_split(argv[0], 32);
 	path = check_input(tmp_arg, envp);
 	if (!tmp_arg || !path)
-		return (ft_free(tmp_arg, ft_count_words(argv[2], 32)), 0);
+		return (ft_free(tmp_arg, ft_count_words(argv[0], 32)), 0);
 	if (close(pipefd[1]))
 		return (errno);
 	dup2(pipefd[0], 0);
 	close(pipefd[0]);
-	fd = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	fd = open(argv[1], O_RDWR | O_CREAT | O_TRUNC, 0666);
 	if (fd < 0)
 		return ((void)close(pipefd[1]), -1);
 	dup2(fd, STDOUT_FILENO);
@@ -153,35 +165,47 @@ int	last_fork(char **argv, char **envp, int pipefd[2])
 	return (0);
 }
 
+int	*open_file(char **argv, int pipefd[2])
+{
+	int	fd;
+
+	fd = open(argv[0], O_RDONLY);
+	if (fd < 0)
+		return ((void)close(pipefd[0]), (void)close(pipefd[1]), NULL);
+	if (dup2(fd, STDIN_FILENO) == -1)
+		return ((void)close(pipefd[0]), (void)close(pipefd[1]), NULL);
+	close(fd);
+	return (pipefd);
+}
+
 int main(int argc, char *argv[], char **envp)
 {
 	pid_t	pid_one;
-	pid_t	pid_two;
-	int		pipefd[2]; 
+	int		pipefd[2];
+	int		i;
 
+	i = 1;
 	if (!envp[0])
 		return (printf("No env\n"));
 	if (argc < 5)
 		return (printf("Not enough args\n"));
 	if (pipe(pipefd) == -1)
 		return (errno);
-	pid_one = fork();
-	if (pid_one == 0)
+	while (++i < argc - 1)
 	{
-		normal_fork(argv, envp, pipefd);
+		pid_one = fork();
+		if (pid_one)
+			continue;
+		if (i == 2)
+			first_fork(&argv[i], envp, open_file(&argv[1], pipefd));
+		if (i == argc - 2)
+			last_fork(&argv[i], envp, pipefd);
+		else
+			normal_fork(&argv[i], envp, pipefd);
 	}
-	pid_two = fork();
-	if (pid_two == 0)
-	{
-		last_fork(argv, envp, pipefd);
-	}
-	// printf("%s\n", path);
-	// tab_print(tmp_arg);
-	// execute_cmd(path, tmp_arg, envp);
 	close(pipefd[0]);
 	close(pipefd[1]);
 	waitpid(pid_one, &pipefd[0], 0);
-	waitpid(pid_two, &pipefd[1], 0);
 	if (WIFEXITED(pipefd[1]))
 		return (WEXITSTATUS(pipefd[1]));
 	return (0);
