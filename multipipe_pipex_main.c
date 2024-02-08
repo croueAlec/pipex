@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_main.c                                       :+:      :+:    :+:   */
+/*   multipipe_pipex_main.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:07:18 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/06 17:43:31 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/08 16:06:25 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include "../libs/libft/libft.h"
+#include "libs/libft/libft.h"
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
