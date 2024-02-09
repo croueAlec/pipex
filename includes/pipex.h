@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:32:52 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/08 19:52:42 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/09 17:39:15 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 # include <errno.h>
 # include <string.h>
 # include <stdlib.h>
+
+# define E_ARG "Argument error, use : "
+# define E_ARG_NBR "./pipex INFILE \"CMD1\" \"CMD2\" OUTFILE\n"
+# define E_ARG_BONUS "./pipex_bonus INFILE \"CMD1\" \"CMD2\" ... OUTFILE \n or "
+# define E_ARG_HDOC "./pipex_bonus here_doc \"CMD1\" \"CMD2\" ... OUTFILE \n"
 
 typedef struct s_args
 {

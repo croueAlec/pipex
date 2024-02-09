@@ -6,7 +6,7 @@
 #    By: acroue <acroue@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/11 11:51:52 by acroue            #+#    #+#              #
-#    Updated: 2024/02/09 15:19:08 by acroue           ###   ########.fr        #
+#    Updated: 2024/02/09 17:30:46 by acroue           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ LIB_FLAGS = --no-print-directory --silent
 # Rules
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(LIBMLX) $(OBJ)
+$(NAME): $(LIBFT) $(OBJ)
 	@echo "$(GREEN)* Assembling $(BWHITE)$@$(DEFAULT)"
 	@$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $@
 
@@ -109,9 +109,9 @@ relib: fcleanlib $(LIBFT)
 
 bonus: $(BONUS)
 
-$(BONUS): $(LIBFT) $(BONUS_OBJ)
+$(BONUS): $(LIBFT) $(OBJ)
 	@echo "$(GREEN)* Assembling $(BWHITE)$@$(DEFAULT)"
-	@$(CC) $(CFLAGS) $(BONUS_OBJ) $(LIB) -o $(BONUS)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(BONUS)
 
 cre:
 	@clear
