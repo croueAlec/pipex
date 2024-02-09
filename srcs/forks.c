@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:49:34 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/09 18:24:08 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/09 19:46:10 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,12 @@ int	middle_fork(char **argv, char **envp, int pipefd[2], int fd)
 	return (0);
 }
 
-int	last_fork(char **argv, char **envp, int pipefd[2], int tmp_fd)
+int	last_fork(char **argv, char **envp, int pipefd[2])
 {
 	char	**tmp_arg;
 	char	*path;
 	int		fd;
 
-	(void)tmp_fd;
 	tmp_arg = ft_split(argv[0], 32);
 	path = check_input(tmp_arg, envp);
 	if (!tmp_arg || !path)
@@ -81,7 +80,7 @@ void	manage_children(int pipefd[2], t_args args, size_t argc, int tmp_fd)
 	if (args.i == 2)
 		first_fork(&args.argv[2], args.envp, pipefd, tmp_fd);
 	if (args.i == argc - 2)
-		last_fork(&args.argv[args.i], args.envp, pipefd, tmp_fd);
+		last_fork(&args.argv[args.i], args.envp, pipefd);
 	else if (args.i > 2 && args.i < argc + 2)
 		middle_fork(&args.argv[args.i], args.envp, pipefd, tmp_fd);
 	ft_printf("NOT SUPPOSED TO HAPPEN\n");

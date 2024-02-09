@@ -6,7 +6,7 @@
 #    By: acroue <acroue@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/11 11:51:52 by acroue            #+#    #+#              #
-#    Updated: 2024/02/09 17:30:46 by acroue           ###   ########.fr        #
+#    Updated: 2024/02/09 19:50:42 by acroue           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ define SRC :=
 	main.c
 	forks.c
 	exec.c
+	here_doc.c
 endef
 SRC := $(strip $(SRC))
 

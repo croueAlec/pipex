@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/09 18:30:44 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/09 19:42:57 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,6 @@ void	init_args(t_args *args, char **argv, char **envp, int argc)
 	args->argv = argv;
 	args->envp = envp;
 	args->argc = argc;
-}
-
-int	open_file(char **argv, int is_bonus)
-{
-	int		fd;
-	char	*tmp;
-
-	if (is_bonus && ft_strncmp(argv[1], "here_doc", 9) == 0)
-	{
-		tmp = ft_strdup(argv[1]);
-		while (access(tmp, F_OK) == 0)
-		{
-			tmp = ft_strjoin(tmp, "a");
-			printf("%s\n", tmp);
-		}
-		fd = open(tmp, O_RDWR | O_CREAT);
-		unlink(tmp);
-		free(tmp);
-		return (fd);
-	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	return (fd);
 }
 
 static int	wait_children(int pid)
@@ -79,7 +55,7 @@ int	main(int argc, char *argv[], char **envp)
 	if ((ft_memcmp(argv[0], "./pipex_bonus", 14) != 0 && argc != 5) || argc < 5)
 		return (arg_error(ft_memcmp(argv[0], "./pipex_bonus", 14) == 0));
 	init_args(&args, argv, envp, argc);
-	fd = open_file(&args.argv[0], ft_memcmp(argv[0], "./pipex_bonus", 14) == 0);
+	fd = open_file(&args, ft_memcmp(argv[0], "./pipex_bonus", 14) == 0);
 	while (++args.i < (size_t)argc - 1)
 	{
 		if (args.i < (size_t)argc - 2)
@@ -89,8 +65,7 @@ int	main(int argc, char *argv[], char **envp)
 			manage_children(pipefd, args, (size_t)argc, fd);
 		else
 		{
-			close(pipefd[1]);
-			close(fd);
+			(close(pipefd[1]), close(fd));
 			fd = pipefd[0];
 		}
 	}
