@@ -6,17 +6,21 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/09 18:08:45 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/09 18:30:44 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	init_args(t_args *args, char **argv, char **envp)
+void	init_args(t_args *args, char **argv, char **envp, int argc)
 {
 	args->i = 1;
+	if (ft_memcmp(argv[0], "./pipex_bonus", 14) == 0)
+		if (ft_strncmp(argv[1], "here_doc", 9) == 0)
+			args->i = 2;
 	args->argv = argv;
 	args->envp = envp;
+	args->argc = argc;
 }
 
 int	open_file(char **argv, int is_bonus)
@@ -74,7 +78,7 @@ int	main(int argc, char *argv[], char **envp)
 
 	if ((ft_memcmp(argv[0], "./pipex_bonus", 14) != 0 && argc != 5) || argc < 5)
 		return (arg_error(ft_memcmp(argv[0], "./pipex_bonus", 14) == 0));
-	init_args(&args, argv, envp);
+	init_args(&args, argv, envp, argc);
 	fd = open_file(&args.argv[0], ft_memcmp(argv[0], "./pipex_bonus", 14) == 0);
 	while (++args.i < (size_t)argc - 1)
 	{

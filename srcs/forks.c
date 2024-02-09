@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:49:34 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/08 19:50:21 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/09 18:24:08 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,5 @@ void	manage_children(int pipefd[2], t_args args, size_t argc, int tmp_fd)
 		last_fork(&args.argv[args.i], args.envp, pipefd, tmp_fd);
 	else if (args.i > 2 && args.i < argc + 2)
 		middle_fork(&args.argv[args.i], args.envp, pipefd, tmp_fd);
-	printf("NOT SUPPOSED TO HAPPEN\n");
+	ft_printf("NOT SUPPOSED TO HAPPEN\n");
 }
