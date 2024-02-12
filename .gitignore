@@ -1,5 +1,6 @@
 # Own ignores
 pipex
+pipex_bonus
 
 # Prerequisites
 *.d
