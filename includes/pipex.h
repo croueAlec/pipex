@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:32:52 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/12 13:59:16 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 15:46:44 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int		last_fork(char **argv, char **envp, int pipefd[2]);
 void	manage_children(int pipefd[2], t_args args, size_t argc, int tmp_fd);
 
 //		here_doc.c
-int	open_file(t_args *args, int is_bonus);
+int		open_file(t_args *args, int is_bonus);
 
 #endif
