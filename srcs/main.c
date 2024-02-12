@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/09 19:42:57 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 11:44:31 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	init_args(t_args *args, char **argv, char **envp, int argc)
 {
 	args->i = 1;
-	if (ft_memcmp(argv[0], "./pipex_bonus", 14) == 0)
+	if (ft_memcmp(&argv[0][args->offset], EX, EX_LEN) == 0)
 		if (ft_strncmp(argv[1], "here_doc", 9) == 0)
 			args->i = 2;
 	args->argv = argv;
@@ -45,6 +45,17 @@ int	arg_error(int is_bonus)
 	return (ft_putstr_fd(E_ARG_HDOC, 2), -1);
 }
 
+int	check_bonus(int ac, char **av, t_args *args)
+{
+	char	*str;
+
+	args->offset = ft_strlen(av[0]) - EX_LEN + 1;
+	str = ft_strdup(&av[0][args->offset]);
+	if (!str || (ft_memcmp(str, EX, EX_LEN) != 0 && ac != 5) || ac < 5)
+		return (free(str), 1);
+	return (free(str), 0);
+}
+
 int	main(int argc, char *argv[], char **envp)
 {
 	t_args	args;
@@ -52,10 +63,10 @@ int	main(int argc, char *argv[], char **envp)
 	int		pipefd[2];
 	int		fd;
 
-	if ((ft_memcmp(argv[0], "./pipex_bonus", 14) != 0 && argc != 5) || argc < 5)
-		return (arg_error(ft_memcmp(argv[0], "./pipex_bonus", 14) == 0));
+	if (check_bonus(argc, argv, &args))
+		return (arg_error(ft_memcmp(&argv[0][args.offset], EX, EX_LEN) == 0));
 	init_args(&args, argv, envp, argc);
-	fd = open_file(&args, ft_memcmp(argv[0], "./pipex_bonus", 14) == 0);
+	fd = open_file(&args, ft_memcmp(&argv[0][args.offset], EX, EX_LEN) == 0);
 	while (++args.i < (size_t)argc - 1)
 	{
 		if (args.i < (size_t)argc - 2)

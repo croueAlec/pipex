@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:32:52 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/09 19:47:20 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 11:39:28 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@
 # define E_ARG_NBR "./pipex INFILE \"CMD1\" \"CMD2\" OUTFILE\n"
 # define E_ARG_BONUS "./pipex_bonus INFILE \"CMD1\" \"CMD2\" ... OUTFILE \n or "
 # define E_ARG_HDOC "./pipex_bonus here_doc \"CMD1\" \"CMD2\" ... OUTFILE \n"
+# define EX "/pipex_bonus"
+# define EX_LEN 13
 
 typedef struct s_args
 {
+	int		offset;
 	char	**argv;
 	char	**envp;
 	size_t	i;
