@@ -6,11 +6,16 @@
 #    By: acroue <acroue@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/11 11:51:52 by acroue            #+#    #+#              #
-#    Updated: 2024/01/24 18:50:25 by acroue           ###   ########.fr        #
+#    Updated: 2024/02/12 18:40:23 by acroue           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =	ft_is/ft_isalnum.c \
+SRCS =	DPrintf/ft_dprintf_basic_functions.c \
+		DPrintf/ft_dprintf_hex.c \
+		DPrintf/ft_dprintf_numbers.c \
+		DPrintf/ft_dprintf.c \
+\
+		ft_is/ft_isalnum.c \
 		ft_is/ft_isalpha.c \
 		ft_is/ft_isascii.c \
 		ft_is/ft_isdigit.c \

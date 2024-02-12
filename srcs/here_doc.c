@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 19:43:01 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/12 15:41:29 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:14:46 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	open_file(t_args *args, int is_bonus)
 	if (fd < 0)
 	{
 		perror("Infile");
-		args->i = 2;
 	}
 	return (fd);
 }

@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:32:52 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/12 15:46:44 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:44:50 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@ typedef struct s_args
 char	*check_input(char **argv, char **envp);
 
 //		forks.c
-int		first_fork(char **argv, char **envp, int pipefd[2], int infile);
-int		middle_fork(char **argv, char **envp, int pipefd[2], int fd);
-int		last_fork(char **argv, char **envp, int pipefd[2]);
 void	manage_children(int pipefd[2], t_args args, size_t argc, int tmp_fd);
 
 //		here_doc.c

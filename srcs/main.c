@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/12 14:26:02 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 17:13:36 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int	wait_children(int pid)
 			error_status = WEXITSTATUS(wait_status);
 	if (pid == -1)
 		return (127);
+	exit(error_status);
 	return (error_status);
 }
 
@@ -81,10 +82,11 @@ int	main(int argc, char *argv[], char **envp)
 			manage_children(pipefd, args, (size_t)argc, fd);
 		else
 		{
+			if (pid < 0 && (close(pipefd[0]) || close(pipefd[0]) < 0))
+				break;
 			(close(pipefd[1]), close(fd));
 			fd = pipefd[0];
 		}
 	}
-	wait_children(pid);
-	return (0);
+	return (wait_children(pid));
 }
