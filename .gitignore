@@ -24,7 +24,6 @@ pipex
 *.a
 *.la
 *.lo
-test
 
 # Shared objects (inc. Windows DLLs)
 *.dll

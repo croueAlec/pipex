@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/12 11:44:31 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 14:26:02 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,14 @@ int	check_bonus(int ac, char **av, t_args *args)
 {
 	char	*str;
 
+	args->bonus = 0;
 	args->offset = ft_strlen(av[0]) - EX_LEN + 1;
 	str = ft_strdup(&av[0][args->offset]);
-	if (!str || (ft_memcmp(str, EX, EX_LEN) != 0 && ac != 5) || ac < 5)
+	if (!str || ac < 5)
+		return (free(str), 1);
+	if (ft_memcmp(str, EX, EX_LEN) == 0 && ac != 5)
+		args->bonus = 1;
+	else if (ac != 5)
 		return (free(str), 1);
 	return (free(str), 0);
 }
@@ -64,9 +69,9 @@ int	main(int argc, char *argv[], char **envp)
 	int		fd;
 
 	if (check_bonus(argc, argv, &args))
-		return (arg_error(ft_memcmp(&argv[0][args.offset], EX, EX_LEN) == 0));
+		return (arg_error(args.bonus));
 	init_args(&args, argv, envp, argc);
-	fd = open_file(&args, ft_memcmp(&argv[0][args.offset], EX, EX_LEN) == 0);
+	fd = open_file(&args, args.bonus);
 	while (++args.i < (size_t)argc - 1)
 	{
 		if (args.i < (size_t)argc - 2)

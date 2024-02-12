@@ -1,0 +1,20 @@
+1ere boucle pipe(pipefd) - fork
+D'abord, faire un dup2 de infile sur stdin
+puis, close fd[0] et dup2 la sortie sur fd[1]
+puis close fd[1] close(infile) et exec
+
+fin boucle close(pipefds)
+
+2e boucle pipe(pipefd) - fork
+dup2 stdin sur fd[0] dup2 stdout fd[1]
+close fd[0] et [1]
+puis exec
+fin boucle, close(pipefds)
+
+3e boucle pareil
+
+4e boucle pipe(pipefd) - fork
+dup2 stdin sur fd[0] dup2 stdout sur outfile
+close fd[0] close fd[1]
+close(outfile) puis exec
+fin boucle, close(pipefds)

@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:49:34 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/09 19:46:10 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 14:15:45 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	last_fork(char **argv, char **envp, int pipefd[2])
 
 void	manage_children(int pipefd[2], t_args args, size_t argc, int tmp_fd)
 {
-	if (args.i == 2)
-		first_fork(&args.argv[2], args.envp, pipefd, tmp_fd);
+	if (args.i == 2 || (args.bonus == 1 && args.i == 3))
+		first_fork(&args.argv[args.i], args.envp, pipefd, tmp_fd);
 	if (args.i == argc - 2)
 		last_fork(&args.argv[args.i], args.envp, pipefd);
 	else if (args.i > 2 && args.i < argc + 2)

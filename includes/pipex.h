@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:32:52 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/12 11:39:28 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/12 13:59:16 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 typedef struct s_args
 {
 	int		offset;
+	int		bonus;
 	char	**argv;
 	char	**envp;
 	size_t	i;
