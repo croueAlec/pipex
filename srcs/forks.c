@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:49:34 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/12 19:00:59 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/13 16:31:16 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,75 +20,74 @@ int	free_fork(char **tmp_arg, char **argv, char *path, int status)
 	return (0);
 }
 
-int	first_fork(char **argv, char **envp, int pipefd[2], int infile)
+int	first_fork(char **av, char **envp, int pipfd[2], int infile)
 {
-	char	**tmp_arg;
+	char	**arg;
 	char	*path;
 
-	tmp_arg = ft_split(argv[0], 32);
-	path = check_input(tmp_arg, envp);
-	if (!tmp_arg || !path || infile < 0)
-		return (free_fork(tmp_arg, argv, path, 0));
-	close(pipefd[0]);
+	arg = ft_split(av[0], 32);
+	path = check_input(arg, envp);
+	if (!arg || !path || infile < 0)
+		return (free_pipex(0, pipfd[0], pipfd[1]), free_fork(arg, av, path, 0));
+	close(pipfd[0]);
 	if (dup2(infile, STDIN_FILENO) < 0)
-		free_fork(tmp_arg, argv, path, errno);
+		return (free_pipex(0, infile, pipfd[1]), free_fork(arg, av, path, 0));
 	close(infile);
-	if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-		free_fork(tmp_arg, argv, path, errno);
-	close(pipefd[1]);
-	if (execve(path, tmp_arg, envp) == -1)
-		ft_dprintf(STDERR_FILENO, "%s : command not found", argv[0]);
-	return (free_fork(tmp_arg, argv ,path, 127));
+	if (dup2(pipfd[1], STDOUT_FILENO) < 0)
+		return (free_pipex(0, -1, pipfd[1]), free_fork(arg, av, path, 0));
+	close(pipfd[1]);
+	if (execve(path, arg, envp) == -1)
+		ft_dprintf(STDERR_FILENO, "%s : command not found\n", av[0]);
+	return (free_fork(arg, av ,path, 127));
 }
 
-int	middle_fork(char **argv, char **envp, int pipefd[2], int fd)
+int	middle_fork(char **av, char **envp, int pipfd[2], int fd)
 {
-	char	**tmp_arg;
+	char	**arg;
 	char	*path;
 
-	tmp_arg = ft_split(argv[0], 32);
-	path = check_input(tmp_arg, envp);
-	if (!tmp_arg || !path || fd < 0)
-		return (free_fork(tmp_arg, argv, path, 1));
+	arg = ft_split(av[0], 32);
+	path = check_input(arg, envp);
+	if (!arg || !path || fd < 0)
+		return (free_pipex(0, pipfd[0], pipfd[1]), free_fork(arg, av, path, 0));
 	if (dup2(fd, STDIN_FILENO))
-		free_fork(tmp_arg, argv, path, errno);
+		return (free_pipex(0, pipfd[0], pipfd[1]), free_fork(arg, av, path, 0));
 	close(fd);
-	close(pipefd[0]);
-	if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-		free_fork(tmp_arg, argv, path, errno);
-	close(pipefd[1]);
-	if (execve(path, tmp_arg, envp) == -1)
-		ft_dprintf(STDERR_FILENO, "%s : command not found", argv[0]);
-	return (free_fork(tmp_arg, argv, path, 127));
+	close(pipfd[0]);
+	if (dup2(pipfd[1], STDOUT_FILENO) < 0)
+		return (free_pipex(0, -1, pipfd[1]), free_fork(arg, av, path, 0));
+	close(pipfd[1]);
+	if (execve(path, arg, envp) == -1)
+		ft_dprintf(STDERR_FILENO, "%s : command not found\n", av[0]);
+	return (free_fork(arg, av, path, 127));
 }
 
-int	last_fork(char **argv, char **envp, int pipefd[2], int bonus)
+int	last_fork(char **av, char **envp, int pipfd[2], int bonus)
 {
-	char	**tmp_arg;
+	char	**arg;
 	char	*path;
 	int		fd;
 
-	tmp_arg = ft_split(argv[0], 32);
-	path = check_input(tmp_arg, envp);
-	if (!tmp_arg || !path)
-		return (free_fork(tmp_arg, argv, path, 1));
-	if (!close(pipefd[1]))
-		return (errno);
+	arg = ft_split(av[0], 32);
+	path = check_input(arg, envp);
+	if (!arg || !path)
+		return (free_pipex(0, pipfd[0], pipfd[1]), free_fork(arg, av, path, 0));
+	close(pipfd[1]);
 	if (bonus)
-		fd = open(argv[1], O_RDWR | O_CREAT | O_APPEND, 0644);
+		fd = open(av[1], O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
-		fd = open(argv[1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		fd = open(av[1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-		(perror("Outfile"), free_fork(tmp_arg, argv, path, 1));
-	if (dup2(pipefd[0], STDIN_FILENO) < 0)
-		free_fork(tmp_arg, argv, path, errno);
-	close(pipefd[0]);
+		(perror("Outfile"), close(pipfd[0]),free_fork(arg, av, path, 1));
+	if (dup2(pipfd[0], STDIN_FILENO) < 0)
+		return (free_pipex(0, pipfd[0], fd), free_fork(arg, av, path, 0));
+	close(pipfd[0]);
 	if (dup2(fd, STDOUT_FILENO) < 0)
-		free_fork(tmp_arg, argv, path, errno);
+		return (free_pipex(0, -1, fd), free_fork(arg, av, path, 0));
 	close(fd);
-	if (execve(path, tmp_arg, envp) == -1)
-		ft_dprintf(STDERR_FILENO, "%s : command not found", argv[0]);
-	return (free_fork(tmp_arg, argv, path, 127));
+	if (execve(path, arg, envp) == -1)
+		ft_dprintf(STDERR_FILENO, "%s : command not found\n", av[0]);
+	return (free_fork(arg, av, path, 127));
 }
 
 void	manage_children(int pipefd[2], t_args args, size_t argc, int tmp_fd)

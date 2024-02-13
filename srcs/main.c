@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/12 17:13:36 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/13 16:42:51 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ int	check_bonus(int ac, char **av, t_args *args)
 	str = ft_strdup(&av[0][args->offset]);
 	if (!str || ac < 5)
 		return (free(str), 1);
-	if (ft_memcmp(str, EX, EX_LEN) == 0 && ac != 5)
+	if (ft_memcmp(str, EX, EX_LEN) == 0 && ac > 5)
+	{
 		args->bonus = 1;
+		return (free(str), 0);
+	}
 	else if (ac != 5)
 		return (free(str), 1);
 	return (free(str), 0);
