@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:49:34 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/13 16:31:16 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/13 16:50:00 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	first_fork(char **av, char **envp, int pipfd[2], int infile)
 	close(pipfd[1]);
 	if (execve(path, arg, envp) == -1)
 		ft_dprintf(STDERR_FILENO, "%s : command not found\n", av[0]);
-	return (free_fork(arg, av ,path, 127));
+	return (free_fork(arg, av, path, 127));
 }
 
 int	middle_fork(char **av, char **envp, int pipfd[2], int fd)
@@ -78,7 +78,7 @@ int	last_fork(char **av, char **envp, int pipfd[2], int bonus)
 	else
 		fd = open(av[1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-		(perror("Outfile"), close(pipfd[0]),free_fork(arg, av, path, 1));
+		(perror("Outfile"), close(pipfd[0]), free_fork(arg, av, path, 1));
 	if (dup2(pipfd[0], STDIN_FILENO) < 0)
 		return (free_pipex(0, pipfd[0], fd), free_fork(arg, av, path, 0));
 	close(pipfd[0]);

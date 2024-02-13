@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/13 16:42:51 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/13 16:49:33 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int argc, char *argv[], char **envp)
 		else
 		{
 			if (pid < 0 && (close(pipefd[0]) || close(pipefd[0]) < 0))
-				break;
+				break ;
 			(close(pipefd[1]), close(fd));
 			fd = pipefd[0];
 		}
