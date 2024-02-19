@@ -6,7 +6,7 @@
 #    By: acroue <acroue@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/11 11:51:52 by acroue            #+#    #+#              #
-#    Updated: 2024/02/09 19:50:42 by acroue           ###   ########.fr        #
+#    Updated: 2024/02/19 11:24:28 by acroue           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -121,12 +121,3 @@ cre:
 norm:
 	@norminette $(SRCS_DIR) $(INCS_DIR) $(BONUS_DIR) | awk '/'Error'/ {print; found=1} END {if (!found) print "$(PURPLE)Norm O.K.$(DEFAULT)"}'
 	@norminette $(LIBFT_DIR) | awk '/'Error'/ {print; found=1} END {if (!found) print "$(YELLOW)Norm libft O.K.$(DEFAULT)"}'
-
-valerie: cre
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
-
-example:
-	@cc example.c -p example
-
-stdout:
-	@cc -g stdout.c libs/libft/libft.a
