@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/19 11:06:38 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:19:14 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int argc, char *argv[], char **envp)
 			manage_children(pipefd, args, (size_t)argc, fd);
 		else
 		{
-			if (pid < 0 && (close(pipefd[0]) || close(pipefd[0]) < 0))
+			if (pid < 0 && args.i >= (size_t)argc - 2 && error_close(pipefd))
 				break ;
 			(close(pipefd[1]), close(fd));
 			fd = pipefd[0];

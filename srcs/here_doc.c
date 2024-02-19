@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 19:43:01 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/19 11:07:11 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:18:05 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,17 @@ int	open_file(t_args *args, int is_bonus)
 		perror(argv[1]);
 	}
 	return (fd);
+}
+
+int	error_close(int pipefd[2])
+{
+	int	one;
+	int	two;
+
+	one = close(pipefd[0]);
+	two = close(pipefd[1]);
+	if (one < 0 || two < 0)
+		return (1);
+	else
+		return (0);
 }
