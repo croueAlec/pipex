@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:36:10 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/08 19:48:16 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/19 10:58:59 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ static char	*find_cmd(char **envp, char **argv)
 
 static int	is_directory(char *str)
 {
+	if (!str || str[0] == '\0')
+		return (0);
 	if (!ft_memcmp("/", str, 1))
 		return (1);
 	if (!ft_memcmp("./", str, 2))
@@ -66,6 +68,8 @@ static int	is_directory(char *str)
 
 char	*check_input(char **argv, char **envp)
 {
+	if (!argv[0])
+		return (NULL);
 	if (is_directory(argv[0]))
 		return (ft_strdup(argv[0]));
 	else if (ft_strchr(argv[0], '/'))
