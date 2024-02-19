@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:20:32 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/13 16:49:33 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:06:38 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_args(t_args *args, char **argv, char **envp, int argc)
 	args->argv = argv;
 	args->envp = envp;
 	args->argc = argc;
+	args->is_here_doc = 0;
 }
 
 static int	wait_children(int pid)

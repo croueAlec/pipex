@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:49:34 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/13 16:50:00 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:09:31 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	middle_fork(char **av, char **envp, int pipfd[2], int fd)
 	return (free_fork(arg, av, path, 127));
 }
 
-int	last_fork(char **av, char **envp, int pipfd[2], int bonus)
+int	last_fork(char **av, char **envp, int pipfd[2], t_args args)
 {
 	char	**arg;
 	char	*path;
@@ -73,7 +73,7 @@ int	last_fork(char **av, char **envp, int pipfd[2], int bonus)
 	if (!arg || !path)
 		return (free_pipex(0, pipfd[0], pipfd[1]), free_fork(arg, av, path, 0));
 	close(pipfd[1]);
-	if (bonus)
+	if (args.bonus && args.is_here_doc)
 		fd = open(av[1], O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
 		fd = open(av[1], O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -95,7 +95,7 @@ void	manage_children(int pipefd[2], t_args args, size_t argc, int tmp_fd)
 	if (args.i == 2 || (args.bonus == 1 && args.i == 3))
 		first_fork(&args.argv[args.i], args.envp, pipefd, tmp_fd);
 	else if (args.i == argc - 2)
-		last_fork(&args.argv[args.i], args.envp, pipefd, args.bonus);
+		last_fork(&args.argv[args.i], args.envp, pipefd, args);
 	else if (args.i > 2 && args.i < argc + 2)
 		middle_fork(&args.argv[args.i], args.envp, pipefd, tmp_fd);
 	ft_printf("NOT SUPPOSED TO HAPPEN\n");

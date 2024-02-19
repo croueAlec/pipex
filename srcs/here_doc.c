@@ -6,7 +6,7 @@
 /*   By: acroue <acroue@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 19:43:01 by acroue            #+#    #+#             */
-/*   Updated: 2024/02/13 16:35:39 by acroue           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:07:11 by acroue           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	put_here_doc(int fd, t_args *args, char *hd_path)
 
 	if (fd < 0 && free_pipex(hd_path, -1, -1))
 		exit(3);
+	args->is_here_doc = 1;
 	fd_out = open(hd_path, O_RDONLY);
 	if (fd_out < 0 && free_pipex(hd_path, fd, -1))
 		exit(3);
